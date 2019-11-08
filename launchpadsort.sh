@@ -61,3 +61,7 @@ if [[ -f "$TMP_FILE" ]]; then
 fi
 
 killall Dock
+
+while [[ $( ps -A | grep -c com.apple.dock.extra$ ) = 0 ]]; do
+	sleep 1.0
+done
