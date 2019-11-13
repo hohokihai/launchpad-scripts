@@ -20,10 +20,8 @@ for PARENT_ID in ${PARENT_IDS[@]}; do
 		NAME=$( sqlite3 "$DB" "SELECT title FROM apps WHERE item_id=$REPLY" )
 		echo "$NAME $REPLY" >> "$TMP_FILE"
 	done
-	ORDERING=0
 	cat "$TMP_FILE" | sort -Vf | sed -E 's/^.* ([0-9]*)$/\1/' | while read; do
 		sqlite3 "$DB" "UPDATE items SET parent_id=$CURRENT_ID WHERE rowid=$REPLY"
-		ORDERING=$(( $ORDERING + 1 ))
 	done
 	sqlite3 "$DB" "DELETE FROM items WHERE rowid=(SELECT parent_id FROM items WHERE rowid=$PARENT_ID)"
 	sqlite3 "$DB" "DELETE FROM items WHERE rowid=$PARENT_ID"
@@ -61,7 +59,6 @@ if [[ -f "$TMP_FILE" ]]; then
 fi
 
 killall Dock
-
 while [[ $( ps -A | grep -c com.apple.dock.extra$ ) = 0 ]]; do
 	sleep 1.0
 done
