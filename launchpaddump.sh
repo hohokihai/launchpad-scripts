@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/zsh
 
 DB="${TMPDIR}../0/com.apple.dock.launchpad/db/db"
-TABLES=($( sqlite3 "$DB" ".tables" ))
 
+TABLES=($( sqlite3 "$DB" ".tables" ))
 for TABLE in ${TABLES[@]}; do
 	if [[ $TABLE != ${TABLES[@]:0:1} ]]; then
 		echo ""
