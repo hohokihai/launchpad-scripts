@@ -1,3 +1,9 @@
+#
+#  launchpaddump.sh
+#
+#  Copyright © 2019-2020 hohokihai. All rights reserved.
+#
+
 #!/bin/zsh
 
 DB="${TMPDIR}../0/com.apple.dock.launchpad/db/db"

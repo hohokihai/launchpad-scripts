@@ -1,3 +1,9 @@
+#
+#  launchpadsort.sh
+#
+#  Copyright © 2019-2020 hohokihai. All rights reserved.
+#
+
 #!/bin/zsh
 
 COUNT_PER_PAGE=35
