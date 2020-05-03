@@ -1,10 +1,9 @@
+#!/bin/zsh
 #
 #  launchpadsort.sh
 #
-#  Copyright © 2019-2020 hohokihai. All rights reserved.
+#  Copyright (C) 2019-2020 hohokihai. All rights reserved.
 #
-
-#!/bin/zsh
 
 COUNT_PER_PAGE=35
 CURRENT_PAGE=0
@@ -12,7 +11,10 @@ ORDERING=0
 
 DB="${TMPDIR}../0/com.apple.dock.launchpad/db/db"
 
-killall Dock
+#  what's this?
+sqlite3 "$DB" "UPDATE dbinfo SET value = 1 WHERE key = 'ignore_items_update_triggers'"
+
+killall com.apple.dock.extra && killall Dock
 while [[ $( ps -A | grep -c com.apple.dock.extra$ ) == 0 ]]; do
 	sleep 0.1
 done
@@ -46,7 +48,7 @@ for ITEM in ${ITEMS[@]}; do
 	sqlite3 "$DB" "DELETE FROM items WHERE rowid=$ITEM"
 done
 
-killall Dock
+killall com.apple.dock.extra && killall Dock
 while [[ $( ps -A | grep -c com.apple.dock.extra$ ) == 0 ]]; do
 	sleep 0.1
 done

@@ -1,10 +1,9 @@
+#!/bin/zsh
 #
 #  launchpadreset.sh
 #
-#  Copyright © 2019-2020 hohokihai. All rights reserved.
+#  Copyright (C) 2019-2020 hohokihai. All rights reserved.
 #
-
-#!/bin/zsh
 
 defaults write com.apple.dock ResetLaunchPad -bool TRUE
 killall Dock
