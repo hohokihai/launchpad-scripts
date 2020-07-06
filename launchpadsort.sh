@@ -11,12 +11,9 @@ ORDERING=0
 
 DB="${TMPDIR}../0/com.apple.dock.launchpad/db/db"
 
-#  what's this?
-sqlite3 "$DB" "UPDATE dbinfo SET value = 1 WHERE key = 'ignore_items_update_triggers'"
-
-killall com.apple.dock.extra && killall Dock
+killall Dock
 while [[ $( ps -A | grep -c com.apple.dock.extra$ ) == 0 ]]; do
-	sleep 0.1
+	sleep 0.2
 done
 
 PAGES=($( sqlite3 "$DB" "SELECT rowid FROM items WHERE flags>=0 AND ordering>=1 AND type=3" ))
@@ -27,7 +24,7 @@ for PAGE in ${PAGES[@]}; do
 		break
 	fi
 done
-ITEMS=($( sqlite3 "$DB" "SELECT title,item_id FROM apps" | sort -fV | sed -E 's/^.+\|([0-9]+)$/\1/' ))
+ITEMS=($( sqlite3 "$DB" "SELECT title,item_id FROM apps" | tr "|" " " | sort -fV | sed -E 's/^.+ ([0-9]+)$/\1/' ))
 for ITEM in ${ITEMS[@]}; do
 	sqlite3 "$DB" "UPDATE items SET ordering=$ORDERING WHERE rowid=$ITEM"
 	sqlite3 "$DB" "UPDATE items SET parent_id=$CURRENT_PAGE WHERE rowid=$ITEM"
@@ -48,7 +45,7 @@ for ITEM in ${ITEMS[@]}; do
 	sqlite3 "$DB" "DELETE FROM items WHERE rowid=$ITEM"
 done
 
-killall com.apple.dock.extra && killall Dock
+killall Dock
 while [[ $( ps -A | grep -c com.apple.dock.extra$ ) == 0 ]]; do
-	sleep 0.1
+	sleep 0.2
 done
